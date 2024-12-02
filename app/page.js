@@ -5,11 +5,15 @@ import styles from "./page.module.css";
 import React, { useState, useEffect } from "react"
 import { getLibrary } from "./helpers/lastfm";
 import Popup from "./helpers/popup";
+import { hanalei } from './fonts/Hanalei'
+
 
 export default function Home() {
   const [library, setLibrary] = useState([])
   const [error, setError] = useState(null)
   const [activeAlbum, setActiveAlbum] = useState(null)
+
+
 
   useEffect(() => {
     const loadLibrary = async () => {
@@ -31,9 +35,10 @@ export default function Home() {
       setActiveAlbum(album)
   }
 
+  //<p>Playcount: {album.playcount}</p>
   return (
     <main>
-      <h1>Sound-Stash</h1>
+      <h1 className={hanalei.className}>Sound-Stash</h1>
       {error ? (
         <p>Error: {error}</p>
       ) : (
@@ -47,7 +52,7 @@ export default function Home() {
               />
               <p className="album-name">{album.name}</p>
               <p className="album-artist">{album.artist.name}</p>
-              <p>Playcount: {album.playcount}</p>
+
             </div>
           ))}
         </div>

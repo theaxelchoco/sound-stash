@@ -14,17 +14,17 @@ const geistMono = localFont({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" >
       <head>
         <title>Sound Stash</title>
       </head>
 
-      <body>
+      <body >
         <header>
 
         </header>
 
-        <main>{children}</main>
+        <main >{children}</main>
       </body>
     </html>
   );
