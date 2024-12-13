@@ -1,14 +1,21 @@
-const LIBRARYURL = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${process.env.NEXT_PUBLIC_USERNAME}&api_key=${process.env.NEXT_PUBLIC_LASTFM_KEY}&format=json`
+
+export const getLibrary = async (userName) => {
+    const user = userName == "" ? process.env.NEXT_PUBLIC_USERNAME : userName
+    const LIBRARYURL = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${user}&api_key=${process.env.NEXT_PUBLIC_LASTFM_KEY}&format=json`
 
 
-export const getLibrary = async () => {
-    const response = await fetch(LIBRARYURL)
+    try {
+        const response = await fetch(LIBRARYURL)
 
-    if (!response.ok)
-        throw new Error("Failed to fetch albums :(")
+        if (!response.ok)
+            throw new Error("Failed to fetch albums :(")
 
-    const data = await response.json()
-    return data.topalbums.album
+        const data = await response.json()
+        return data.topalbums.album
+
+    } catch (err) {
+        return null
+    }
 }
 
 export const getArtistInfo = async (artist) => {

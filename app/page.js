@@ -12,33 +12,54 @@ export default function Home() {
   const [library, setLibrary] = useState([])
   const [error, setError] = useState(null)
   const [activeAlbum, setActiveAlbum] = useState(null)
+  const [userName, setUserName] = useState("")
 
-
+  let userInput = ""
 
   useEffect(() => {
     const loadLibrary = async () => {
+      if (userName == "") {
+        setLibrary([])
+        setError(null)
+        return
+      }
+
       try {
-        const data = await getLibrary()
-        setLibrary(data)
+        const data = await getLibrary(userName)
+        if (data) {
+          setLibrary(data)
+          setError(null)
+        } else {
+          setLibrary([])
+          setError("No Library Found.")
+        }
+
       } catch (err) {
+        setLibrary([])
         setError(err.message)
       }
     }
 
     loadLibrary()
-  })
+  }, [userName])
 
   const albumClicked = (album) => {
-    if (activeAlbum == album)
-      setActiveAlbum(null)
-    else
-      setActiveAlbum(album)
+    setActiveAlbum((activeAlbum == album) ? null : album)
   }
 
-  //<p>Playcount: {album.playcount}</p>
   return (
     <main>
       <h1 className={hanalei.className}>Sound-Stash</h1>
+
+      <input
+        type="text"
+        placeholder="Last.FM Username"
+        autoFocus={true}
+        onChange={(e) => (userInput = e.target.value)}
+      />
+
+      <button onClick={() => setUserName(userInput)}>Search</button>
+
       {error ? (
         <p>Error: {error}</p>
       ) : (
@@ -46,13 +67,12 @@ export default function Home() {
           {library.map((album, index) => (
             <div key={album.mbid || index} className="album-card" onClick={() => albumClicked(album)}>
               <img
-                src={album.image[2]["#text"] || "/placeholder.png"}
+                src={album.image[3]["#text"] || "/placeholder.png"}
                 alt={album.name}
                 className="album-cover"
               />
               <p className="album-name">{album.name}</p>
               <p className="album-artist">{album.artist.name}</p>
-
             </div>
           ))}
         </div>

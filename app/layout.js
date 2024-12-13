@@ -20,10 +20,6 @@ export default function RootLayout({ children }) {
       </head>
 
       <body >
-        <header>
-
-        </header>
-
         <main >{children}</main>
       </body>
     </html>

@@ -3,11 +3,11 @@ import styles from "../popup.module.css"
 import { getArtistInfo } from "./lastfm"
 
 export default function Popup({ album, onClose }) {
-    if (!album)
+    if (!album || !album.image)
         return
 
+    console.log(album)
 
-    console.log(check)
 
     return (
         <div
@@ -24,8 +24,9 @@ export default function Popup({ album, onClose }) {
                     className={styles.albumImage}
                 />
                 <h2>{album.name}</h2>
-                <p><strong>Artist:</strong> {album.artist.name}</p>
-                <p><strong>Genre:</strong> {album.genre || "Unknown"}</p>
+                <a><strong>Artist:</strong> {album.artist.name}</a>
+                <p><strong>Plays:</strong> {album.playcount || "Unknown"}</p>
+                <a href={album.url}><strong>Listen Now</strong></a>
             </div>
         </div>
     )
