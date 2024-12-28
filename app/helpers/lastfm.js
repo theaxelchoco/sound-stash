@@ -1,18 +1,23 @@
+import { upsertArtist } from "./db"
 
 export const getLibrary = async (userName) => {
     const user = userName == "" ? process.env.NEXT_PUBLIC_USERNAME : userName
     const LIBRARYURL = `https://ws.audioscrobbler.com/2.0/?method=user.gettopalbums&user=${user}&api_key=${process.env.NEXT_PUBLIC_LASTFM_KEY}&format=json`
 
-
     try {
         const response = await fetch(LIBRARYURL)
-
         if (!response.ok)
             throw new Error("Failed to fetch albums :(")
 
         const data = await response.json()
-        return data.topalbums.album
+        const topAlbums = data.topalbums.album
 
+        for (let i = 0; i < topAlbums.length; i++) {
+            const artist = topAlbums[i].artist.name
+            await upsertArtist({ name: artist })
+        }
+
+        return topAlbums
     } catch (err) {
         return null
     }
