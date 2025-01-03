@@ -1,9 +1,11 @@
+"use server"
 import { MongoClient } from "mongodb";
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@sound-stash.h9go3.mongodb.net/`;
 const client = new MongoClient(uri);
 
 let db;
+
 
 export const connectToDatabase = async () => {
     if (!db) {
@@ -17,7 +19,7 @@ export const connectToDatabase = async () => {
         }
     }
 
-    return database
+    return db
 }
 
 export const upsertArtist = async (artist) => {
