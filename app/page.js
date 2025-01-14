@@ -23,41 +23,41 @@ export default function Home() {
         return
       }
 
-      try {
-        const data = await getLibrary(userName)
-        if (data) {
-          setLibrary(data)
-          setError(null)
+      const data = await getLibrary(userName)
+      if (data) {
+        setLibrary(data)
+        setError(null)
 
-          const artists = data.map((album) => ({ name: album.artist.name }))
-          const response = await fetch("/api/artists", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ artists }),
-          })
-
-          if (!response.ok) {
-            const errorData = await response.json()
-            console.error("Failed to upsert artists:", errorData.error)
-            throw new Error("Failed to upsert artists")
-          }
-
-          console.log("Artists batch upserted successfully")
-        } else {
-          setLibrary([])
-          setError("No Library Found.")
-        }
-      } catch (err) {
-        console.log(err)
-        console.error("Error in loadLibrary:", err)
-        setLibrary(library)
-        setError(err.message)
+        setTimeout(() => {
+          upsertArtists(data)
+        }, 0)
+      } else {
+        setLibrary([])
+        setError("No Library Found.")
       }
     }
 
+    const upsertArtists = async (libraryData) => {
+      if (libraryData.length === 0) return
 
+      try {
+        const artists = libraryData.map((album) => ({ name: album.artist.name }))
+        const response = await fetch("/api/artists", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ artists }),
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error("Failed to upsert artists")
+        }
+
+      } catch (err) {
+      }
+    }
 
     loadLibrary()
   }, [userName])

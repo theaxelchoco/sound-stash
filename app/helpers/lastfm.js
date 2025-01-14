@@ -14,7 +14,7 @@ export const getLibrary = async (userName) => {
 
         for (let i = 0; i < topAlbums.length; i++) {
             const artist = topAlbums[i].artist.name
-            await upsertArtist({ name: artist })
+            upsertArtist({ name: artist })
         }
 
         return topAlbums
