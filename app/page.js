@@ -68,22 +68,24 @@ export default function Home() {
 
   return (
     <main>
-      <h1 className={hanalei.className}>Sound-Stash</h1>
+      <h1 className={hanalei.className}>Sound Stash</h1>
 
       <form
+        className="search-form"
         onSubmit={(e) => {
           e.preventDefault()
           setUserName(userInput)
         }}
       >
         <input
+          className="search-input"
           type="text"
           placeholder="Last.FM Username"
           autoFocus={true}
           onChange={(e) => (userInput = e.target.value)}
         />
 
-        <button type="submit">Search</button>
+        <button className="search-submit" type="submit">SEARCH</button>
       </form>
 
 
